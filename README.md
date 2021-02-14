@@ -92,3 +92,49 @@ log(add10(10)); // 결과값 : 20
 어떠한 값도 제너레이터 함수를 통해 조작할 수 있다. 제너레이터를 통해서 굉장히 다양한 값을 순회할 수 있는 이터러블을
 프로그래머가 더 쉽게 로직을 만들어가며 순회를 시킬 수 있다.
 
+## 🌹 map, filter, reduce 알아보기
+
+함수형 프로그래밍에서 map, filter, reduce 는 아주 실용적으로 자주 쓸 수 있는 것 들이다.
+
+### map 함수
+
+```
+ 👇 map이라는 함수 선언
+  const map = (f, iter) => { // 함수를 받아서 어떤 값을 출력할 것인지.
+    let res = [];
+    for (const a of iter) {
+      res.push(f(a)); // 어떤 값을 수집하다.
+    }
+    return res;
+  };
+
+  log(map(p => p.name, products)); // 반복문으로 출력하게 된다. (상품)
+  log(map(p => p.price, products)); // 반복문으로 출력하게 된다. (가격)
+
+```
+
+<br>
+
+### filter 함수
+
+>특정 금액 이상, 이하의 상품만 뽑아내는 함수이다.
+
+<br>
+
+```
+//필터함수 선언
+const filter = (f, iter) => {
+    let res = []; //배열함수
+    for (const a of iter) {
+      if (f(a)) res.push(a);
+    }
+    return res;
+  };
+
+  //출력시 이렇게 조건을 주어 출력 할 수 있다.
+  log(...filter(p => p.price < 20000, products));
+```
+
+긴 코드들을 es6 문법을 통해 이렇게 간결화 시킬 수 있다. 
+
+### reduce 함수
