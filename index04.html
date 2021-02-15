@@ -1,0 +1,42 @@
+<script src="lib/fx.js"></script>
+
+<h1></h1>
+
+
+<script>
+  const products = [
+    {name: '반팔티', price: 15000},
+    {name: '긴팔티', price: 20000},
+    {name: '핸드폰케이스', price: 15000},
+    {name: '후드티', price: 30000},
+    {name: '바지', price: 25000}
+  ];
+
+  const add = (a, b) => a + b;
+
+  //첫 번째 방법
+  log(
+    reduce(
+      add,
+      map(p => p.price,//가격들을 map함수를 통해 배열로 뽑아낸다.
+        filter(p => p.price < 20000, products))));
+  // map, filter, reduce 함수를 중첩해서
+  // 코딩을 해보았는데 이걸 읽을 때 중첩되어있어서 복잡해 보이지만
+  // 오른쪽부터 왼쪽으로 읽어나가면 된다.
+
+  // 상품을 2만원 미만으로 필터를 하고, 
+  // 해당하는 값을 맵을 통해 뽑아낸 다음에
+  // 해당하는 모든 값을 add로 축약을하여 출력을 하면된다.
+  // 결과값 : 30000
+
+
+  //두 번째 방법
+  log(
+    reduce(
+      add,
+      filter(n => n >= 20000, // 특정 가격들을 필터함수를 통해 뽑아낸다.
+        map(p => p.price, products))));
+  // map을 먼저하고 그 다음에 필터를 한다.
+  // 먼저 가격을 뽑아준 후에 필터로 가격을 거르고
+  // reduce로 add값을 한 번에 축약해서 log시킨다.    
+</script>
