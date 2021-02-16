@@ -2,20 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>장바구니 출력해보기</title>
+  <title>HTML 출력해보기 - 장바구니</title>
   <script src="lib/fx.js"></script>
 </head>
 <body>
-  <div id="cart">
-  </div>
 
-  <script>
+<div id="cart">
+</div>
 
-    // 장바구니에 담을 상품들
-    // name(상품명), price(상품가격), quantity(상품수량)
-    const products = [
+<script>
+
+  // 상품 배열 데이터
+  // quantity: 수량개수 , is_selected 선택된 상품들과 아닌 상품
+  const products = [
     {name: '반팔티', price: 15000, quantity: 1, is_selected: true},
     {name: '긴팔티', price: 20000, quantity: 2, is_selected: false},
     {name: '핸드폰케이스', price: 15000, quantity: 3, is_selected: true},
@@ -23,30 +22,46 @@
     {name: '바지', price: 25000, quantity: 5, is_selected: false}
   ];
 
-  // 총 수량
-  //const total_quantity = products => go(products,
- //   map( p => p.quantity), // 이것만 찍어보면 결과값 : 1,2,3,4,5
- //   reduce((a,b) => a+b)); // 총 수량이나온다. reduce로 총 수량을 축약시켜 결과값을 뽑아냄
-  //log(total_quantity(products)); // 얘도 총 수량
+  const add = (a, b) => a + b;
 
-  //-----------------------------------------------------------------------
-  // ☝🏻 위 코드를 변형시켜서
-  // products => go(products, : 이부분을 pipe로 간단하게 뽑아낼 수도 있다.
+  const sum = curry((f, iter) => go(
+    iter,
+    map(f),
+    reduce(add))); // 한 번에 모든 값들을 축약해준다.
 
-  const add = (a,b) => a+b;
+  const total_quantity = sum(p => p.quantity);
 
-  const total_quantity = pipe(
-    map( p => p.quantity), // 이것만 찍어보면 결과값 : 1,2,3,4,5
-    reduce((a,b) => a+b)); // 총 수량이나온다. reduce로 총 수량을 축약시켜 결과값을 뽑아냄
+  const total_price = sum(p => p.price * p.quantity);
 
-  log(total_quantity(products)); // 얘도 총 수량
+  // 제품들이 출력되어 나올 HTML 뼈대 작성
+  document.querySelector('#cart').innerHTML = `
+    <table>
+      <tr>
+        <th></th>
+        <th>상품 이름</th>
+        <th>가격</th>
+        <th>수량</th>
+        <th>총 가격</th>
+      </tr>
+      ${go(products, sum(p => `
+          <tr>
+            <td><input type="checkbox" ${p.is_selected ? 'checked' : ''}></td> // 선택여부 뽑아내는 함수
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td><input type="number" value="${p.quantity}"></td>
+            <td>${p.price * p.quantity}</td>
+          </tr>
+      `))}
+      <tr>
+        <td colspan="3">합계</td>
 
-  const total_price = pipe(
-    map(p => p.price * p.quantity),
-    reduce(add));
+        // 선택된 함수들을 filter로 뽑아내서 total값을 보여준다. (가격과, 상품의수)
+        <td>${total_quantity(filter(p => p.is_selected, products))}</td> 
+        <td>${total_price(filter(p => p.is_selected, products))}</td>
+      </tr>
+    </table>
+  `;
+</script>
 
-    log(total_price(products));
-    
-  </script>
 </body>
 </html>
