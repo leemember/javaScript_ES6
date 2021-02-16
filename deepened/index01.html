@@ -39,20 +39,29 @@
 </script>
 
 <script>
+  // name 테스트 이름을 받고
+  // time 만큼 실행하기 위해서 
+  // f 실행할 함수를 받다
   function test(name, time, f) {
-    console.time(name);
-    while (time--) f();
-    console.timeEnd(name);
+    console.time(name); // 테스트가 시작할 때
+    while (time--) f(); //time만큼 실행하기 위해서
+    console.timeEnd(name); //테스트가 끝났을 때
   }
 
-  // test('range', 10, () => reduce(add, range(1000000)));
-  // test('L.range', 10, () => reduce(add, L.range(1000000)));
+  //일반 range
+  test('range', 10, () => reduce(add, range(1000000)));
+  //L.range
+  test('L.range', 10, () => reduce(add, L.range(1000000)));
+  // 를 비교하는 테스트입니다.
+
   console.clear();
 </script>
 
 ## take
 
 <script>
+  //인자를 2개를 받고, limit값과 이터러블 값을 받는다
+  // take함수의 기본꼴입니다.
   const take = curry((l, iter) => {
     let res = [];
     for (const a of iter) {
@@ -64,7 +73,7 @@
   console.time('');
   go(
     range(10000),
-    take(5),
+    take(5), // 5개만 짤라볼 수 있는 함수이다.
     reduce(add),
     log);
   console.timeEnd('');
