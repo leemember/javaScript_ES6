@@ -34,7 +34,7 @@
   // products => go(products, : 이부분을 pipe로 간단하게 뽑아낼 수도 있다.
 
   const add = (a,b) => a+b;
-  
+
   const total_quantity = pipe(
     map( p => p.quantity), // 이것만 찍어보면 결과값 : 1,2,3,4,5
     reduce((a,b) => a+b)); // 총 수량이나온다. reduce로 총 수량을 축약시켜 결과값을 뽑아냄
@@ -43,9 +43,10 @@
 
   const total_price = pipe(
     map(p => p.price * p.quantity),
-    reduce((a,b) => a+b));
+    reduce(add));
 
     log(total_price(products));
+    
   </script>
 </body>
 </html>
