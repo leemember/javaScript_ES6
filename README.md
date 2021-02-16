@@ -17,7 +17,7 @@
 
 ### 🔥 함수형 자바스크립트 라이브러리 https://github.com/marpple/fxjs
 
-🔥 이 외에도 <b>functional javascript library</b>검색하면 함수형 자바스크립트에 관한 라이브러리들이 나온다.
+### 🔥 이 외에도 <b>functional javascript library</b>검색하면 함수형 자바스크립트에 관한 라이브러리들이 나온다.
 
 <br>
 
