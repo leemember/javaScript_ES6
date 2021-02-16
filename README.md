@@ -9,7 +9,7 @@
 
 - [이터러블/이터레이터 프로토콜](#이터러블/이터레이터-프로토콜)
 
-- [map, filter, reduce 알아보기](#map,-filter,-reduce-알아보기)
+- [map, filter, reduce 알아보기](#map,filter,reduce-알아보기)
 
 - [코드를 값으로 다루어 표현력 높이기](#코드를-값으로-다루어-표현력-높이기)
 
@@ -141,7 +141,7 @@ log(add10(10)); // 결과값 : 20
 
 <br>
 
-## 🌹 map, filter, reduce 알아보기
+## 🌹 map,filter,reduce 알아보기
 
 > 함수형 프로그래밍에서 map, filter, reduce 는 아주 실용적으로 자주 쓸 수 있는 것 들이다.
 
