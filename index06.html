@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장바구니 출력해보기</title>
+  <script src="lib/fx.js"></script>
+</head>
+<body>
+  <div id="cart">
+  </div>
+
+  <script>
+
+    // 장바구니에 담을 상품들
+    // name(상품명), price(상품가격), quantity(상품수량)
+    const products = [
+    {name: '반팔티', price: 15000, quantity: 1, is_selected: true},
+    {name: '긴팔티', price: 20000, quantity: 2, is_selected: false},
+    {name: '핸드폰케이스', price: 15000, quantity: 3, is_selected: true},
+    {name: '후드티', price: 30000, quantity: 4, is_selected: false},
+    {name: '바지', price: 25000, quantity: 5, is_selected: false}
+  ];
+
+  // 총 수량
+  //const total_quantity = products => go(products,
+ //   map( p => p.quantity), // 이것만 찍어보면 결과값 : 1,2,3,4,5
+ //   reduce((a,b) => a+b)); // 총 수량이나온다. reduce로 총 수량을 축약시켜 결과값을 뽑아냄
+  //log(total_quantity(products)); // 얘도 총 수량
+
+  //-----------------------------------------------------------------------
+  // ☝🏻 위 코드를 변형시켜서
+  // products => go(products, : 이부분을 pipe로 간단하게 뽑아낼 수도 있다.
+
+  const add = (a,b) => a+b;
+  
+  const total_quantity = pipe(
+    map( p => p.quantity), // 이것만 찍어보면 결과값 : 1,2,3,4,5
+    reduce((a,b) => a+b)); // 총 수량이나온다. reduce로 총 수량을 축약시켜 결과값을 뽑아냄
+
+  log(total_quantity(products)); // 얘도 총 수량
+
+  const total_price = pipe(
+    map(p => p.price * p.quantity),
+    reduce((a,b) => a+b));
+
+    log(total_price(products));
+  </script>
+</body>
+</html>
