@@ -1,0 +1,167 @@
+<script src="../lib/fx.js"></script>
+
+# 이터러블 중심 프로그래밍에서의 지연 평가 (Lazy Evaluation)
+- 제때 계산법
+- 느긋한 계산법
+- 제너레이터/이터레이터 프로토콜을 기반으로 구현
+
+### L.map
+
+<script>
+  L.map = function *(f, iter) {
+    for (const a of iter) yield f(a);
+  };
+
+  //it 함수에 있는 a=> a+10 는 L.map이 선언한 매게변수 중 f에 속한다.
+  var it = L.map(a => a + 10, [1, 2, 3]);
+  log(it.next());  // 결과값 : {value: 1, don: false}
+  log(it.next());  // 결과값 : {value: 2, don: false}
+  log(it.next());  // 결과값 : {value: 3, don: false}
+// L.map은 next를 통해서 내가 평가하는 만큼의 값만 받을 수 있다.
+</script>
+
+### L.filter
+
+<!-- 
+  이터레이터를 모두 순회하면서
+  yield하는 값이 L.filter인 경우에는 f를 적용해 봤을 때
+  true로 값이 떨어진다면 그때 a를 yield 해주는 식이다.
+ -->
+<script>
+  L.filter = function *(f, iter) {
+    for (const a of iter) if (f(a)) yield a;
+    // 원하는 상황에만 yield해준다. (필터링)
+  };
+  var it = L.filter(a => a % 2, [1, 2, 3, 4]);
+  log(it.next()); // 1
+  log(it.next()); // 3
+  log(it.next()); // value : undefined
+
+  //왜냐면, 조건을 홀수만 나오게끔 했기 때문이다.
+</script>
+
+
+### range, map, filter, take, reduce 중첩 사용
+
+<script>
+
+  // range 함수의 기본꼴 입니다.
+  const range = l => {
+    let i = -1;
+    let res = [];
+    while (++i < l) {
+      res.push(i);
+    }
+    return res;
+  };  
+  // range 함수 -------------------
+
+  const map = curry((f, iter) => {
+    let res = [];  // 인자가 어떻게 들어가는지 확인하고
+    iter = iter[Symbol.iterator]();
+    let cur; // 이터레이터가 어떻게 변하는지 확인
+    while (!(cur = iter.next()).done) { // 언제까지 반복하는지 조건
+      const a = cur.value;
+      res.push(f(a));
+    }
+    return res;
+  });
+
+  const filter = curry((f, iter) => {
+    let res = []; // 인자가 어떻게 들어가는지 확인하고
+    iter = iter[Symbol.iterator]();
+    let cur; // 이터레이터가 어떻게 변하는지 확인
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (f(a)) res.push(a); // a값 확인하기
+    }
+    return res;
+  });
+
+  const take = curry((l, iter) => {
+    let res = [];
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      res.push(a);
+      if (res.length == l) return res; // 어떨 때에 return을 하게 되는지.
+    }
+    return res;
+  });
+
+  const reduce = curry((f, acc, iter) => {
+    if (!iter) {
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().value;
+    } else {
+      iter = iter[Symbol.iterator]();
+    }
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      acc = f(acc, a);
+    }
+    return acc;
+  });
+//-----------------동일한 코드의 While문을 넣어줬다---------------
+
+  console.time('');
+  go(range(100000),
+    map(n => n + 10),
+    filter(n => n % 2),
+    take(10), // 결국 take 해주는 수만 뽑아내준다.
+    log);
+  console.timeEnd('');
+  // 원하는 값만 뽑아내고 끝내기 때문에 성능상 문제가 없다.
+</script>
+
+### L.range, L.map, L.filter, take, reduce 중첩 사용
+
+<script>
+  L.range = function* (l) {
+    let i = -1;
+    while (++i < l) {
+      yield i;
+    }
+  };
+
+  L.map = curry(function* (f, iter) {
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      yield f(a);
+    }
+  });
+
+  L.filter = curry(function* (f, iter) {
+    iter = iter[Symbol.iterator]();
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      if (f(a)) {
+        yield a;
+      }
+    }
+  });
+
+  // [0, 1, 2, 3, 4, 5, 6, 7, 8...]
+  // [10, 11, 12, ...]
+  // [11, 13, 15 ..]
+  // [11, 13]
+  //
+  // [0    [1
+  // 10     11
+  // false]  true]
+  // 세로로 계산되고 있다.
+
+  // console.time('L');
+  //go함수는 분명 계단 내려가는 순서대로 실행된다고 했으나,
+  go(L.range(Infinity), // 무한수를 동작시켜도 10개만 뽑아준다. take(10)이라서
+    L.map(n => n + 10),
+    L.filter(n => n % 2),
+    take(10), //이게 가장 먼저 실행된다. 그리고 take부터 역으로 L.filter - L.map 이 순서대로 계산된다. 그리고 또 range로 들어가서 계단 내려가는 순서대로 실행된다.
+    log);    
+  // console.timeEnd('L');
+</script>

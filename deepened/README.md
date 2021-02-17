@@ -87,3 +87,53 @@ take를 만나면 2개만 뽑아져 나온다.
 
 ([1, 2]) // 위 배열 중에 2개만 출력됨.
 ```
+
+<br>
+
+## 🌹 제너레이터/이터레이터 프로토콜로 구현하는 지연평가
+
+### 🤍 L.map
+
+- 평가를 미루는 성질을 가지고, 평가 순서를 달리 조작할 수 있는 이터레이터를 반환하는 제너레이터 함수이다.
+
+```
+var it = L.map(a => a + 10, [1, 2, 3]);
+  log(it.next());
+  log(it.next());
+  log(it.next());
+```
+
+여기서 it 함수에 있는 a => a+10은 L.map이 선언한 매게변수 중 f에 속한다.
+
+L.map은 next를 통해서 내가 평가하는 만큼의 값만 받을 수 있다.
+
+### 🤍 L.filter
+
+- 이터레이터를 모두 순회하면서
+  yield하는 값이 L.filter인 경우에는 f를 적용해 봤을 때
+  true로 값이 떨어진다면 그때 a를 yield 해주는 식이다.
+
+```
+L.filter = function *(f, iter) {
+    for (const a of iter) if (f(a)) yield a;
+    // 원하는 상황에만 yield해준다. (필터링)
+  };
+  var it = L.filter(a => a % 2, [1, 2, 3, 4]);
+  log(it.next()); // 1
+  log(it.next()); // 3
+  log(it.next()); // value : undefined
+```
+
+> map, filter는 특정한 방식으로 다르게 평가를 받고도 똑같은 결과를 받는다는 결합법칙을 가지고 있다. 가로로 평가하지 않고, 세로로 평가를 해준다.<br><br>
+> 사용하는 데이터가 무엇이든지, 사용하는 보조 함수가 순수 함수라면 무엇이든지, 아래와 같이 결합한다면 둘 다 결과가 같다고 볼 수있다.
+
+```
+[[mapping, mapping], [filtering, filtering], [mapping, mapping]]
+=
+[[mapping, filtering, mapping], [mapping, filtering, mapping]]
+```
+
+## 🌼 지연평가의 장점 🌼
+  내가 원하는 시점에 값을 뽑아낼 수 있다는 장점이 있다.
+
+  
