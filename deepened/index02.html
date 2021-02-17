@@ -165,3 +165,66 @@
     log);    
   // console.timeEnd('L');
 </script>
+
+
+
+## 결과를 만드는 함수 reduce, take
+
+### reduce
+
+<script>  
+//함수형 프로그래밍을 사용하다보면. 
+// pipe 함수를 사용해서 코드의 재사용성의 효율을 느낄 수 있다고 한다.
+  L.entries = function* (obj) {
+    for (const k in obj) yield [k, obj[k]];
+  };
+
+  const join = curry((sep = ',', iter) =>
+    reduce((a, b) => `${a}${sep}${b}`, iter)); // 🙌여기서 이터러블 프로토콜을 쓴다는 얘기는
+
+  // 객체로부터 queryStr를 만드는 함수를 만든다.
+  const queryStr = pipe(
+    L.entries, //entries는 key, value를 구분해준다.
+    L.map(([k, v]) => `${k}=${v}`), //{limit: 10, offset: 10, type: 'notice'}이런 결과를 받을 수 있다.
+    join('&')); // 🙌join으로 갈 때 까지 지연한다는 뜻이다.
+
+  log(queryStr({limit: 10, offset: 10, type: 'notice'}));
+
+  function *a() {
+    yield 10;
+    yield 11;
+    yield 12;
+    yield 13;
+  }
+  
+  log(join(' - ', a())); // 결과값 10-11-12-13
+  // join이 한 번에 합쳐준다.
+</script>
+
+### take, find
+
+<script>
+  const users = [
+    {age: 32},
+    {age: 31},
+    {age: 37},
+    {age: 28},
+    {age: 25},
+    {age: 32},
+    {age: 31},
+    {age: 37}
+  ];
+
+  const find = curry((f, iter) => go(
+    iter,
+    L.filter(f),
+    take(1),
+    ([a]) => a));
+
+  log(find(u => u.age < 30)(users));
+
+  go(users,
+    L.map(u => u.age),
+    find(n => n < 30),
+    log);
+</script>
