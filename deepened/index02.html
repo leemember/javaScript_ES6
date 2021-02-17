@@ -218,10 +218,10 @@
   const find = curry((f, iter) => go(
     iter,
     L.filter(f),
-    take(1),
+    take(1), // take를 통해 결과를 하나 찾으면 결과값을 그만 뱉는다.
     ([a]) => a));
 
-  log(find(u => u.age < 30)(users));
+  log(find(u => u.age < 30)(users)); // 유저 나이가 30살 보다 적은.
 
   go(users,
     L.map(u => u.age),
