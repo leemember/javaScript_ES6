@@ -1,0 +1,180 @@
+<script src="../lib/fx.js"></script>
+
+## L.flatten
+// 결과적으로 값을 다 펼쳐서 하나의 배열로 만드는 함수이다.
+// 
+<script>
+  log([...[1, 2], 3, 4, ...[5, 6], ...[7, 8, 9]]);
+
+  const isIterable = a => a && a[Symbol.iterator];
+  //&&을 해주는 이유는 안전하게 해주는 이유라고함
+
+  L.flatten = function* (iter) {
+    //이터러블 프로토콜을 이용한 지연적으로 동작하는 함수를 만들기 위해서 제너레이터로 함수를 선언했다.
+    //L.flatten의 기본 함수이다.
+    for (const a of iter) {
+      if (isIterable(a)) for (const b of a) yield b
+      // 이터러블이면 a를 하고 아니면 yield를 하자 (b)
+      else yield a;
+    }
+  };
+
+  var it = L.flatten([[1, 2], 3, 4, [5, 6], [7, 8, 9]]);
+  //이런 배열이 있다고 봤을때
+  log(it.next());
+  log(it.next()); // next를 하면 값들이 하나씩 꺼내진다.
+  log(it.next());
+  log(it.next());
+  log(take(6, L.flatten([[1, 2], 3, 4, [5, 6], [7, 8, 9]])));
+  // 수동적으로 하는게 아니라 한번에 동적으로 값들을 펼쳐주게 한다.
+
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  
+  //flatten는 값들을 즉시 평가를 해준다.
+  const flatten = pipe(L.flatten, takeAll);
+  log(flatten([[1, 2], 3, 4, [5, 6], [7, 8, 9]]));
+
+  console.clear();
+</script>
+
+## yield *
+
+<script>
+  L.flatten = function* (iter) {
+    for (const a of iter) {
+      if (isIterable(a)) 🧡 for (const b of a) yield b
+      else yield a;
+    }
+  };
+</script>
+
+<script>
+  L.flatten = function* (iter) {
+    for (const a of iter) {
+      if (isIterable(a)) 🧡 yield* a;
+      else yield a;
+    }
+  };
+</script>
+
+이렇게 yield를 사용해서 변경하였다.
+
+## L.deepFlat
+
+<script>
+  L.deepFlat = function* f(iter) {
+    for (const a of iter) {
+      if (isIterable(a)) yield* f(a);
+      else yield a;
+    }
+  };
+  log([...L.deepFlat([1, [2, [3, 4], [[5]]]])]);
+  // [1, 2, 3, 4, 5];
+</script>
+
+## L.flatMap
+// 이 함수는 map과 flatten를 동시에 하는 함수라고 보면 된다.
+<script>
+  log([[1, 2], [3, 4], [5, 6, 7]].flatMap(a => a));
+  //이걸 실행 했을 때 결과값은 이 값들을 그대로 펼쳐주게 된다. 배열로 선언되지 않은 값들도 펼쳐줌
+  // flatMap만의 특별한 점은 (a => a)함수를 사용해 안에 있는 값들을 변화를 줘서 사용 할 수 있다.
+
+  log([[1, 2], [3, 4], [5, 6, 7]].flatMap(a => a.map(a => a * a)));
+  // 곱한 값들을 map 함수를 통해 한꺼번에 뽑아내준다.
+
+  L.flatMap = curry(pipe(L.map, L.flatten));
+  const flatMap = curry(pipe(L.map, flatten));
+
+  // var it = L.flatMap(map(a => a * a), [[1, 2], [3, 4], [5, 6, 7]]);
+  var it = L.flatMap(a => a, [[1, 2], [3, 4], [5, 6, 7]]);
+  log([...it]); // 이렇게 하면 밑에처럼 한번씩 next 하지 않고 모든 값을 뽑아내준다.
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  log(flatMap(a => a, [[1, 2], [3, 4], [5, 6, 7]]));
+  // 바로 값들도 즉시평가 해준다.
+
+
+  // 😬 응용편
+  log(flatMap(L.range, map(a => a + 1, [1, 2, 3])));
+
+  var it = L.flatMap(L.range, map(a => a + 1, [1, 2, 3]));
+  log(it.next());
+  log(it.next());
+  log(it.next());
+  log(it.next());
+
+  log(take(3, L.flatMap(L.range, map(a => a + 1, [1, 2, 3]))));
+  // 결과값 : 0 1 0 1 0 2 0 1 2 3
+  // 이 함수는 앞에 take 3이 되어있으니 값이 3개만 뽑아져나온다.
+  console.clear();
+</script>
+
+
+## 2차원 배열 다루기
+
+<script>
+  const arr = [
+    [1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [9, 10]
+  ]; // 배열로 값들을 담아 놓는다.
+  // 값을 평가 할 때, 위에서 순서대로 평가하는게 아니라
+  // 1 한번 평가하고 2 한번 평가하고 이렇게 세로로 평가해준다.
+
+  go(arr, // 배열 값들을
+    L.flatten, 
+    L.filter(a => a % 2), // 필터링을 해주어 홀수만 남겨준다.
+    L.map(a => a * a), // 반복문으로 값을 뽑아내준다.
+    take(4), // 4개까지만 순회를 해준다.
+    reduce(add),
+    log);
+    // 만약 L이 없다면 지연성이 없어서 한 번에 쭈루룩 값이 다 나온다.
+</script>
+
+
+## 지연성 / 이터러블 중심 프로그래밍 실무적인 코드
+<script>
+  var users = [
+    {
+      name: 'a', age: 21, family: [
+        {name: 'a1', age: 53}, {name: 'a2', age: 47},
+        {name: 'a3', age: 16}, {name: 'a4', age: 15}
+      ]
+    },
+    {
+      name: 'b', age: 24, family: [
+        {name: 'b1', age: 58}, {name: 'b2', age: 51},
+        {name: 'b3', age: 19}, {name: 'b4', age: 22}
+      ]
+    },
+    {
+      name: 'c', age: 31, family: [
+        {name: 'c1', age: 64}, {name: 'c2', age: 62}
+      ]
+    },
+    {
+      name: 'd', age: 20, family: [
+        {name: 'd1', age: 42}, {name: 'd2', age: 42},
+        {name: 'd3', age: 11}, {name: 'd4', age: 7}
+      ]
+    }
+  ];
+  // 4명의 유저들의 값을 이렇게 배열로 담아두었다.
+
+  go(users,
+    L.flatMap(u => u.family), // map을 통해 유저의 패밀리를 반복문으로 뽑아준다.
+    L.filter(u => u.age > 20), // 가족중 성인이 아닌 사람들을 걸러내준다.
+    L.map(u => u.age), // 유저들의 나이를 뽑아준다. 이름 뽑고싶으면 u.name으로 하면된다.
+    take(4), // 4명만 뽑아줘라~~~
+    reduce(add), // 축약해준다.
+    log);
+</script>

@@ -153,3 +153,48 @@ join함수는 결국에는 리듀스로 결론을 내는 함수다.
 ### 🤍 find 함수
 
 take를 통해서 take를 이용해서 결론을 낼 수 있는 함수이다.
+
+### 🤍 L.flatten 함수
+>결과적으로 값을 다 펼쳐서 하나의 배열로 만드는 함수이다. flatten는 값들을 즉시 평가를 해준다.
+
+```
+  const flatten = pipe(L.flatten, takeAll);
+  log(flatten([[1, 2], 3, 4, [5, 6], [7, 8, 9]]));
+```
+
+### 🤍 yield *
+
+```
+L.flatten = function* (iter) {
+    for (const a of iter) {
+      if (isIterable(a)) for (const b of a) yield b
+      else yield a;
+    }
+  };
+```
+
+> yield * 을 활용하면 위 코드를 아래와 같이 변경할 수 있다. 
+
+```
+yield *iterable은 for (const val of iterable) yield val;
+```
+과 같다.
+
+### 🤍 L.deepFlat
+
+> 만일 깊은 iterable을 모두 펼치고 싶다면 아래와 같이 L.deepFlat을 구현하여 사용할 수 있다.
+
+```
+L.deepFlat = function* f(iter) {
+    for (const a of iter) {
+      if (isIterable(a)) yield* f(a);
+      else yield a;
+    }
+  };
+  log([...L.deepFlat([1, [2, [3, 4], [[5]]]])]);
+  // [1, 2, 3, 4, 5];
+```
+
+### 🤍 L.flatMap
+이 함수는 map과 flatten를 동시에 하는 함수라고 보면 된다.
+<b>값을 배열식으로 반복해서 뽑아내 줌 !</b>
