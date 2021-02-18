@@ -215,10 +215,12 @@
     {age: 37}
   ];
 
+  // 이 특정 데이터 중에서 조건에 일치하는 함수를 첫 번째로 뽑아내는게 find이다.
+  // find 함수에 기본 꼴입니다.
   const find = curry((f, iter) => go(
     iter,
     L.filter(f),
-    take(1), // take를 통해 결과를 하나 찾으면 결과값을 그만 뱉는다.
+    take(1), // take를 통해 특정값 하나만 찾아준다.
     ([a]) => a));
 
   log(find(u => u.age < 30)(users)); // 유저 나이가 30살 보다 적은.
