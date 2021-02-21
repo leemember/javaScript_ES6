@@ -4,8 +4,9 @@
 
 <script>
   Promise.resolve(Promise.resolve(1)).then(function (a) {
-    log(a);
+    log(a); //그리고 안쪽에 있는 값부터 출력된다.
   });
 
   new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log);
+  // Promise로 resolve가 여러번 묶여있어도 단 한번의 then으로 안에 있는 것들을 볼 수 있다고 함
 </script>

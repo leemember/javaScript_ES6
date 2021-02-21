@@ -122,4 +122,16 @@ var users = [
 > 이렇게 중간에 reject를 넣어버리면 아래에 있는 값들은 무시되고 바로 빨간 에러메시지만 발생하고 끝난다.
 🍄 그런데 여기서 마지막에 catch(a => console.log(a))함수를 사용하면 텍스트로 에러메시지가 뜬다.
 
-Promise는 이처럼 내가 원하는 시점에 값을 뽑아낼 때 사용하기 좋다.
+## promise.then의 중요한 규칙
+
+```
+
+  Promise.resolve(Promise.resolve(1)).then(function (a) {
+    log(a);
+  });
+
+  new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log);
+
+```
+위 코드에서 Promise로 resolve가 여러번 묶여있어도 단 한번의 then으로 안에 있는 것들을 볼 수 있다고 함.
+그리고 안 쪽에서부터 값이 출력된다 ! Promise는 이처럼 내가 원하는 시점에 값을 뽑아낼 때 사용하기 좋다.
