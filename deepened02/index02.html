@@ -1,0 +1,14 @@
+<script src="../lib/fx.js"></script>
+
+## go, pipe, reduce에서 비동기 제어
+
+<script>
+  go(Promise.resolve(1),
+    a => a + 10,
+    a => Promise.reject('error~~'),
+    //비동기 상황이 일어났을 때 올바른 결과가 나타나게끔 에러값을 발생시켜준다.
+    a => console.log('----'),
+    a => a + 1000,
+    a => a + 10000,
+    log).catch(a => console.log(a));
+</script>

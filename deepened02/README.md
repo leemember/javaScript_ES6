@@ -48,7 +48,8 @@ const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
 ```
   log(f(g(1)))
-```😄
+```
+
 이렇게 !
 
 ### Array로 합성하기
@@ -67,6 +68,7 @@ Promise.resolve(2).then(g).then(f)
     setTimeout(() => resolve(2), 100)
   ).then(g).then(f)
 ```
+
 > Promise도 Array와 비슷하게, then이라는 메서드를 연달아 사용해서 함수를 합성한다.
 근데 <b>🌟Promise는 Array보다 더 안전하게 합성🌟</b> 해준다.
 이 경우 비동기가 일어나는 값을 가지고 g,f를 먼저 합성한 후에 하고 싶은 일을 합성한다. 그래서 array보다는 더 안전하게 합성하는 방법이라는 것이다.
@@ -104,3 +106,20 @@ var users = [
     fg(2).then(log);
   }, 10);
 ```
+
+## go, pipe, reduce에서 비동기 제어
+> 연속적으로 함수를 사용할 수 있는 함성함수
+
+```
+  go(Promise.resolve(1),
+    a => a + 10,
+    a => Promise.reject('error~~'),
+    a => console.log('----'),
+    a => a + 1000,
+    a => a + 10000,
+    log).catch(a => console.log(a));
+```
+> 이렇게 중간에 reject를 넣어버리면 아래에 있는 값들은 무시되고 바로 빨간 에러메시지만 발생하고 끝난다.
+🍄 그런데 여기서 마지막에 catch(a => console.log(a))함수를 사용하면 텍스트로 에러메시지가 뜬다.
+
+Promise는 이처럼 내가 원하는 시점에 값을 뽑아낼 때 사용하기 좋다.

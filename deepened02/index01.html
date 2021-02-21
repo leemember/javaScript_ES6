@@ -10,24 +10,23 @@
     setTimeout(() => callback(a + 10), 100); // 딜레이를 만들어, 100ms 이후에 결과가 나타나도록 해준다.
   }
 
-  //add10의 함수
-  //콜백패턴의 함수는 이런 꼴인데,
+  //콜백패턴의 함수는 이런 꼴
   var a = add10(5, res => {
-    add10(res, res => { // add10이 된 이후에 함수를 출력해준다.
+    add10(res, res => { 
       add10(res, res => {
         log(res);
       });
     });
   });
 
-  // log(a);
-  //add20의 함수
+  // -----------------------------------------------
+  
   function add20(a) {
     return new Promise(resolve => setTimeout(() => resolve(a + 20), 100));
   } //Promise가 끝났다는 것을 resolve 함수를 통해 알게 된다.
 
   //프로미스는 이렇게 가독성이 좋다.
-  //콜백지옥이 싫다면 then메소드 방법을 쓰는 것 추천 
+  //콜백지옥이 싫다면 Promise에 then메소드 방법을 쓰는 것 추천 
   var b = add20(5)
         .then(add20)
         .then(add20)
@@ -44,19 +43,17 @@
     setTimeout(() => resolve(a), 100));
 
   //인자로 쓸 함수하나와 사용할 함수 이렇게 선언해준다.
-  //Promise가 아닌 값이 실행되야 
-  const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
-  // Promise라면 a.then(f)을, 아니라면 f(a)를 출력한다.
-  const add5 = a => a + 5;
-  //5를 더해주는 함수가 있다고 했을 때
+  //Promise라면 a.then(f)을, 아니라면 f(a)를 출력한다.
   //(a, f) 얘네들은 동기적으로 바뀌어야 될 함수여야만 한다.
-
-  const n1 = 10;
-  // log(go1(go1(n1, add5), log));
-  // 이 값들은 즉시 실행되는 것을 알려준다.   
-  const n2 = delay100(10);
-  // log(go1(go1(n2, add5), log));
+  const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
   
+  //5를 더해주는 함수가 있다고 했을 때
+  const add5 = a => a + 5;
+
+
+  // 이 값들은 즉시 실행되는 것을 알려준다.   
+  const n1 = 10;
+  const n2 = delay100(10);
 </script>
 
 ## Composition
@@ -65,7 +62,7 @@
 <script type="module">
   // f . g 이와 같은 함수 합성은
   // f(g(x)) 이거와 같은 결괏값이 나온다고 보면 된다.
-  // 모나드란 ? 함수를 안전하게 합성하게 해준다.
+  // 모나드란 ? 함수를 안전하게 합성하게 해주는 것
 
   const g = a => a + 1;
   const f = a => a * a;
