@@ -1,0 +1,134 @@
+<script src="../lib/fx.js"></script>
+
+# Promise
+
+## 일급
+
+<script>
+  //callback 패턴의 함수입니다.
+  function add10(a, callback) { //callback:결과를 전달할 함수를 추가로 받는다.
+    setTimeout(() => callback(a + 10), 100); // 딜레이를 만들어, 100ms 이후에 결과가 나타나도록 해준다.
+  }
+
+  //add10의 함수
+  //콜백패턴의 함수는 이런 꼴인데,
+  var a = add10(5, res => {
+    add10(res, res => { // add10이 된 이후에 함수를 출력해준다.
+      add10(res, res => {
+        log(res);
+      });
+    });
+  });
+
+  // log(a);
+  //add20의 함수
+  function add20(a) {
+    return new Promise(resolve => setTimeout(() => resolve(a + 20), 100));
+  } //Promise가 끝났다는 것을 resolve 함수를 통해 알게 된다.
+
+  //프로미스는 이렇게 가독성이 좋다.
+  //콜백지옥이 싫다면 then메소드 방법을 쓰는 것 추천 
+  var b = add20(5)
+        .then(add20)
+        .then(add20)
+  // .then(log);
+
+  // log(b);
+</script>
+
+## 일급 활용
+
+<script>
+  //delay100 얘를 a 로 전달한다.
+  const delay100 = a => new Promise(resolve =>
+    setTimeout(() => resolve(a), 100));
+
+  //인자로 쓸 함수하나와 사용할 함수 이렇게 선언해준다.
+  //Promise가 아닌 값이 실행되야 
+  const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+  // Promise라면 a.then(f)을, 아니라면 f(a)를 출력한다.
+  const add5 = a => a + 5;
+  //5를 더해주는 함수가 있다고 했을 때
+  //(a, f) 얘네들은 동기적으로 바뀌어야 될 함수여야만 한다.
+
+  const n1 = 10;
+  // log(go1(go1(n1, add5), log));
+  // 이 값들은 즉시 실행되는 것을 알려준다.   
+  const n2 = delay100(10);
+  // log(go1(go1(n2, add5), log));
+  
+</script>
+
+## Composition
+<!-- 함수 합성 -->
+
+<script type="module">
+  // f . g 이와 같은 함수 합성은
+  // f(g(x)) 이거와 같은 결괏값이 나온다고 보면 된다.
+  // 모나드란 ? 함수를 안전하게 합성하게 해준다.
+
+  const g = a => a + 1;
+  const f = a => a * a;
+
+  // log(f(g(1))); => 이런 값들이 g,f를 합성했다. 고 보면된다.
+  // log(f(g()));
+
+  //Array와 Promise를 통해서 모나드를 제대로 알아보자.
+  //(함수 합성을 안전하게 결과내는 법)
+  Array.of(1).map(g).map(f)/*.forEach(r => log(r))*/;
+  [].map(g).map(f)/*.forEach(r => log(r))*/;
+  //연속적으로 합성하고 싶으면 map(g).map(f)이렇게 map을 연달아 사용하면 된다.
+
+  Promise.resolve(2).then(g).then(f)/*.then(r => log(r))*/;
+  new Promise(resolve =>
+    setTimeout(() => resolve(2), 100)
+  ).then(g).then(f)/*.then(r => log(r))*/;
+  //Promise도 Array와 비슷하다
+  //Promise는 then이라는 메서드를 통해서 함수를 합성한다
+  //이 경우에는 비동기가 일어나는 값을 가지고 g,f를 합성한 후에 하고싶은 일을 합성한다.
+  //Promise : 비동기를 안전하게 합성하도록 하는 것이다.
+</script>
+
+## Kleisli Composition
+<!--  Kleisli Composition 이 관점에서 Promise를 살펴보자 -->
+<!-- 오류가 있을 수 있는 상황에서의 함수를 합성 할 수 있는 규칙이다 -->
+<script>
+  // f . g를 합성했다고 했을 때
+  // f(g(x)) = f(g(x)) 양변에 x가 같다면 이건 항상 같다는 법칙이 있다.
+  // f(g(x)) = g(x)
+
+  //users의 데이터값
+  var users = [
+    {id: 1, name: 'aa'},
+    {id: 2, name: 'bb'},
+    {id: 3, name: 'cc'}
+    // 이 배열들을 상태라고 칭한다.
+  ];
+
+  //유저를 아이디값으로 찾는 함수
+  const getUserById = id =>
+    find(u => u.id == id, users) || Promise.reject('없어요!');
+    //결과를 찾아봤을 때는 reject로 없다고 결괏값을 뽑아내준다.
+
+  //f라는 함수도 추가 객체에서 name을 구조분해를 통해 추출한다.
+  const f = ({name}) => name;
+  const g = getUserById;
+
+  //위 두개의 함수를 합성하면 사실 위험한 상황이 발생한다.
+  // 근데 갑자기 users.pop()이렇게 외부요인으로 에러가 날 수 있기 때문에
+  // 이걸 방지하기 위한 것은 바로 Kleisli Composition라고 볼 수 있다.
+
+  // const fg = id => f(g(id));
+  // 아이디를 받아서 f를 연속적으로 실행하고 싶을 때 f(g(id))이렇게 한다.
+
+  const fg = id => Promise.resolve(id).then(g).then(f).catch(a => a);
+  // 안전하게 함수 합성하는 방법.
+
+  fg(2).then(log);
+
+  setTimeout(function () {
+    users.pop(); // 두번의 pop이 일어나서
+    users.pop();
+    fg(2).then(log);
+  }, 10);
+</script>
