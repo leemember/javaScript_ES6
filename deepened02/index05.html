@@ -6,16 +6,20 @@
   const C = {};
 
   function noop() {
-  }
+  } // 아무것도 하지 않는 함수 선언
 
   const catchNoop = ([...arr]) =>
     (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
+    // 앞에 코드들은 동작하고 arr로 동작한다.
 
-  C.reduce = curry((f, acc, iter) => iter ?
-    reduce(f, acc, catchNoop(iter)) :
-    reduce(f, catchNoop(acc)));
+  //(f, acc, iter) f 함수 acc 누적할 값 iter 이터럴값
+  C.reduce = curry((f, acc, iter) => iter ? // 이터레이터가 있을때는
+    reduce(f, acc, catchNoop(iter)) : // 이 코드를 그대로 넘긴다.
+    reduce(f, catchNoop(acc))); // 이터가 없을 때는 이 코드를 동작한다.
 
   C.take = curry((l, iter) => take(l, catchNoop(iter)));
+  //catch는 원하는 시점에 해줘도 된다.
+  //(l, iter) limit값을 받고 iter값을 준다.
 
   C.takeAll = C.take(Infinity);
 
@@ -28,12 +32,16 @@
     setTimeout(() => resolve(a), 1000);
   });
   /*  // console.time('');
-    go([1, 2, 3, 4, 5, 6, 7, 8, 9],
-      L.map(a => delay1000(a * a)),
+    go([1, 2, 3, 4, 5, 6, 7, 8, 9], // 9번 처리해준다.
+      L.map(a => delay1000(a * a)), // 병렬적으로
       L.filter(a => delay1000(a % 2)),
       L.map(a => delay1000(a * a)),
+
+      //위에 L 함수들을 다 병렬적 처리해주고
+
       // C.take(2),
       C.reduce(add),
+      // C로 한번에 축약해준다.
       /!*log,
       _ => console.timeEnd('')*!/);*/
 </script>
@@ -41,8 +49,8 @@
 ## 즉시 병렬적으로 평가하기 - C.map, C.filter
 
 <script>
-  // C.map(a => delay1000(a * a), [1, 2, 3, 4]).then(log);
-  // C.filter(a => delay1000(a % 2), [1, 2, 3, 4]).then(log);
+  // C.map(a => delay1000(a * a), [1, 2, 3, 4]).then(log); //병렬적으로
+  // C.filter(a => delay1000(a % 2), [1, 2, 3, 4]).then(log); //동기적으로
 </script>
 
 ## 즉시, 지연, Promise, 병렬적 조합하기
@@ -55,7 +63,7 @@
   });
 
   console.time('');
-  go([1, 2, 3, 4, 5, 6, 7, 8],
+  go([1, 2, 3, 4, 5, 6, 7, 8], // 전체를 다 돌고, 
     L.map(a => delay500(a * a, 'map 1')),
     L.filter(a => delay500(a % 2, 'filter 2')),
     L.map(a => delay500(a + 1, 'map 3')),
@@ -63,4 +71,7 @@
     reduce(add),
     log,
     _ => console.timeEnd(''));
+
+    // 함수앞에 L이 붙으면 지연적으로
+    // C가 붙으면 병렬적으로 처리해준다.
 </script>

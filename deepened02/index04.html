@@ -1,31 +1,45 @@
 <script src="../lib/fx.js"></script>
 
 ## 지연 평가 + Promise - L.map, map, take
+<!-- 이 함수들은 동기상황에서만 잘 동작하는 함수들이다. -->
+<!-- 비동기 상황이 나왔을 때 잘 제어할 수 있도록 하는 코드를 짜보자 -->
+<!-- [lib] - [fx.js] 파일에 함수형 프로그래밍을 담아놨다.
+  비동기상황과 다른 코드들이 잘 동작되도록 -->
 
 <script>
-  /*  go(
+  /*  
+    방법1.
+    go(
       [1, 2, 3],
       L.map(a => Promise.resolve(a + 10)),
+      // 만약에 배열안에 있는 1,2,3이 각각 Promise.resolve로 처리되어있으면 동작하지 않는다.
+      // 이 코드는 동작할 수 있도록 구현해보았다.
       take(2),
       log);
+    
+    방법2.
     go(
       [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
       L.map(a => a + 10),
       take(2),
       log);
+    방법3.
     go(
       [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
-      L.map(a => Promise.resolve(a + 10)),
+      L.map(a => Promise.resolve(a + 10)), // Promise.resolve를 안에 넣어도 잘 동작한다.
       take(2),
       log);
+    방법4.
     go(
       [1, 2, 3],
       map(a => Promise.resolve(a + 10)),
       log);
+    방법5.
     go(
       [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
       map(a => a + 10),
       log);
+    방법6.
     go(
       [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
       map(a => Promise.resolve(a + 10)),
@@ -33,6 +47,7 @@
 </script>
 
 ## Kleisli Composition - L.filter, filter, nop, take
+<!--  -->
 
 <script>
   go([1, 2, 3, 4, 5, 6],
@@ -53,13 +68,14 @@
 </script>
 
 ## reduce에서 nop 지원
+<!-- 지연성과 프로미스를 모두 다 동작할 수 있도록 해주는 리듀스를 만들어보자-->
 
 <script>
-  go([1, 2, 3, 4, 5],
+  go([1, 2, 3, 4, 5], // 변수 선언
     L.map(a => Promise.resolve(a * a)),
     L.filter(a => Promise.resolve(a % 2)),
-    reduce(add)/*,
-    log*/);
+    reduce(add)
+    /*log*/);    
 </script>
 
 <script>
@@ -71,7 +87,7 @@
     L.filter(a => {
       log(a);
       return new Promise(resolve => setTimeout(() => resolve(a % 2), 1000))
-    }),
+    }), // 1초뒤에 동작하도록 하기
     take(2),
     reduce(add),
     log);
