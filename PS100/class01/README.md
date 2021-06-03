@@ -55,3 +55,42 @@ arr.splice(0, 1, 10000) 으로 구현하면 된다.
 으로 해주면 된다. 두 번째 매개변수가 0이면 아무것도 삭제되지 않는다.
 
 [2번 문제 코드 바로보기](./20210602.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 3번 : 변수의 타입
+
+- 다음 출력 값으로 올바른 것은?
+
+```
+var arr = [100, 200, 300];
+console.log(typeof(arr));
+```
+
+1. undefined
+2. string
+3. number
+4. <code>object</code>
+
+이 문제를 풀려면 **자바스크립트 변수 타입**에 대해서 알아야 한다.
+
+1. 원시타입 : number, string, boolean, undefined, null 👈 이거 외엔 전부 참조타입(object)
+2. 참조타입 : object
+
+```
+var myValue;
+console.log(typeof myValue);
+//콘솔 결과 : undefined
+
+var myValue = null;
+console.log(typeof myValue);
+//콘솔 결과 : object
+```
+
+변수에 아무것도 없을 때는 undefined가 뜬다. 변수에 null 값을 주면 콘솔 결과에는 object가 뜨는데 사실은 null이 맞다. 근데 왜 object가 찍히냐면 자바스크립트 만든 사람이 처음부터 잘못 만들었다고 한다. 이제와서 고치기엔 너무 많은 사람들이 자바스크립트로 개발을 많이 했기 때문에 그렇다고한다. 사실상 var myValue = null 값은 typeof가 null이 맞다.
+
+### 👉 문제 결과 : 답은 4번이다. (arr 변수는 배열이기 때문에 참조타입인 Object다.)
