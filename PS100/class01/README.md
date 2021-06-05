@@ -181,7 +181,20 @@ a+=i는 a=a+i이니
 - 다음은 자바스크립트 문법 중에서 False로 취급하는 것들 입니다. 앗, False로 취급하지 않는 것이 하나 있네요! Ture를 찾아주세요.
 
 1. NaN
-2. 1
+2. <code>1</code>
 3. ""
 4. 0
 5. undefined
+
+False 값은 Falsy / True 값은 Truthy 라고 합니다.
+
+- Falsy : 0, ' ' (빈 문자열), NaN, Null, undefined
+- Truthy :
+
+```
+console.log(!)
+```
+
+여기서 느낌표 뒤에 오는 값이 트루면 false를 반환하고, false면 true를 반환한다.
+
+[6번 문제 코드 바로보기](./20210605.js)
