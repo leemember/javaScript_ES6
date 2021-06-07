@@ -7,3 +7,4 @@ var d = {
 };
 
 console.log(d['weight']);
+// 결과값은 84
