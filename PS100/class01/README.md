@@ -435,3 +435,101 @@ console.log(s);
 <code>1+2+3+4+5 ... + 100</code> 이렇게 1부터 100까지 더해지는 과정을 이 for문을 통해 알아보자. i값은 1로 초기화 된 상태이고 100까지 더해지는 것이니 <code>i <= 100</code>으로 조건문을 만든다. 그리고 i가 1씩 증가되게끔 증감식을 정하고 <code>s = s + i</code>를 해주면 for문이 돌아가면서 i가 for문 돌 때마다 증가(++) 되면서 S와 1~100까지 더해지는 것이다. 그 과정이 궁굼하다면 for문 안에 콘솔로그로 찍어보면 된다.
 
 [11번 문제 코드 바로보기](./20210609.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 12번 : 게임 캐릭터 클래스 만들기
+
+- 다음 소스코드에서 클래스를 작성하여 게임 캐릭터의 능력치와 '파이어볼'이 출력되게 만드시오.
+  주어진 소스 코드를 수정해선 안됩니다.
+
+```
+데이터
+<여기에 class를 작성하세요.>
+
+const x = new Wizard(545, 210, 10);
+console.log(x.health, x.mana, x.armor);
+x.attack();
+
+출력
+545 210 10
+파이어볼
+```
+
+<br>
+
+### 👉 문제 결과
+
+```
+// 클래스 작성문
+class Wizard {
+  constructor(health, mana, armor) {
+    this.health = health;
+    this.mana = mana;
+    this.armor = armor;
+  }
+  attack() {
+    console.log('파이어볼');
+  }
+}
+
+const x = new Wizard(545, 210, 10);
+
+console.log(x.health, x.mana, x.armor);
+
+x.attack();
+
+// 출력시
+545 210 10
+파이어볼
+```
+
+위자드라는 클래스를 생성할 때 <code>constructor</code>라는 함수를 사용했다.<br>
+<code>constructor</code> : 객체에서 인스턴스가 생성이 될 때 반드시 실행이 되는 함수인데 **객체를 초기화 해주는 역할**을 한다.
+
+```
+constructor(👉health, mana, armor👈) {
+    this.health = health;
+    this.mana = mana;
+    this.armor = armor;
+  }
+```
+
+멤버 변수를 선언할 때 <code>this</code>를 사용하는 이유를 간단히 설명하자면, this를 사용하지 않았을 시 constructor의 안에 있는 객체들이 매개변수 안에 있는 것들인지 무엇인지 알 수가 없다. 좀 더 명확하게 해주기 위해 위자드 클래스로 만들어지는 인스턴스는 매개변수에 있는 객체라고 명확하게 해주기 위해서 this 키워드를 사용한 것이다.
+
+```
+    this.health = health;
+    this.mana = mana;
+    this.armor = armor;
+```
+
+this를 넣어서 이들이 <code>constructor(health, mana, armor)</code>에 담긴 매개변수라는 것을 명확하게 표현했다.
+
+```
+attack() {
+    console.log('파이어볼');
+  }
+```
+
+이것도 '파이어볼'이라는 텍스트가 들어간 인스턴스라고 보면 된다. <br>
+이렇게 하면 출력 할 때,
+
+```
+const x = new Wizard(545, 210, 10);
+console.log(x.health, x.mana, x.armor);
+x.attack();
+```
+
+인스턴스의 값들 <code>(health=545, mana=210, armor=10)</code>으로 인식하는 것이다. <br> 그리하여 <code>console.log(x.health, x.mana, x.armor)</code>은 x의 멤버변수를 뜻하는 것이다.
+
+[12번 문제 코드 바로보기](./20210610.js)
+
+<br>
+
+---
+
+<br>
