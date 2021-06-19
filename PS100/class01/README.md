@@ -736,3 +736,35 @@ console.log(Math.floor(sum / score.length));
 
 `for (let i = 0; i < score.length; i++) {` score에 있는 원소의 갯수만큼 for문이 회전을 한다. `sum = sum + parseInt(score[i], 10);` 이걸 정수형 10진수로 바꿔주는 `parseInt`를 사용한다. `console.log(sum / score.length);` 이렇게 콘솔에 출력하면 평균값이 소수점까지 전부 찍혀 나오는데, 여기서 `Math floor` 함수를 사용하면 소수점 자리들을 없애준다.
 **⭐ Math floor** 는 주어진 값보다 이하의 가장 큰 정수를 반환하는 기능을 지니고 있다. `const score = prompt().split(" ");` 공백으로 구분하여 배열로 만들어서 그것으로 처리를 해주는 split 함수.
+
+[18번 문제 코드 바로보기](./20210618.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 19번 : 제곱을 구하자
+
+- 공백으로 구분하여 두 숫자 a와 b가 주어지면, a의 b승을 구하는 프로그램을 작성하세요.
+
+### 👉 문제 결과
+
+```
+const num = ["2", "6"];
+
+console.log(Math.pow(num[0], num[1]));
+```
+
+pow 메소드의 첫 번째 매개변수가 베이스 값이 되고, 두 번째 매개변수가 몇승인지 정하는 숫자이다. num의 첫번째 원소가 2고 두번째 원소가 2니까 2의 6승으로 64라는 값이 찍혀나온다. 근데 여기서 `const num = ["2", "6"];` 숫자가 아니라 문자열로 되어있는데 pow는 숫자형 문자를 사용해도 괜찮은 함수인 듯 하다. 하지만 나는 확실하게 숫자로 만들어주고 싶다. 그렇게 하기 위해서는
+
+### 👉 문제 결과 (2)
+
+```
+const num = prompt().split(" ");
+
+console.log(Math.pow(parseInt(num[0], 10), parseInt(num[1], 10)));
+```
+
+[19번 문제 코드 바로보기](./20210619.js)
