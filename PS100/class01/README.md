@@ -768,3 +768,50 @@ console.log(Math.pow(parseInt(num[0], 10), parseInt(num[1], 10)));
 ```
 
 [19번 문제 코드 바로보기](./20210619.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 20번 : 몫과 나머지
+
+- 공백으로 구분하여 두 숫자가 주어집니다. 두번째 숫자로 첫번째 숫자를 나누었을 때 그 몫과 나머지를 공백으로 구분하여 출력하세요.
+
+```
+입출력
+
+입력 : 10 2
+출력 : 5 0
+```
+
+<br>
+
+### 👉 문제 결과
+
+```
+const num = ["7", "2"];
+
+let val1 = Math.floor(num[0] / num[1]);
+console.log(val1);
+```
+
+`Math.floor`함수를 적용하기 전의 val1 의 결과값은 3.5가 나온다. 하지만 `Math.floor` 함수를 넣어 실수형이 제거되고 정수형만 출력되도록 하여 **결과값은 3**이 나온다.
+
+<br>
+
+### 👉 문제 결과(2)
+
+```
+const num = ["7", "2"];
+
+let val1 = Math.floor(parseInt(num[0], 10) / parseInt(num[1], 10));
+console.log(val1);
+
+let val2 = parseInt(num[0], 10) % parseInt(num[1], 10);
+console.log(val1, val2);
+```
+
+답 : 3과 1이 나온다. <br>
+문자형을 숫자형으로 바꾸기 위해서 `parseInt`를 사용했다. (완벽하게 숫자형으로 바꿔줌!) 그리고 나머지 값도 구해주기 위해서 `let val2 = parseInt(num[0], 10) % parseInt(num[1], 10);` 라는 코드를 짰다. 나머지 연산자를 구하려면 % 기호를 사용하자. 그리고 `parseInt(num[0], 10)` 에 배열 뒤에 있는 10은 10진수를 의미한다.
