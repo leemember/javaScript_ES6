@@ -815,3 +815,48 @@ console.log(val1, val2);
 
 답 : 3과 1이 나온다. <br>
 문자형을 숫자형으로 바꾸기 위해서 `parseInt`를 사용했다. (완벽하게 숫자형으로 바꿔줌!) 그리고 나머지 값도 구해주기 위해서 `let val2 = parseInt(num[0], 10) % parseInt(num[1], 10);` 라는 코드를 짰다. 나머지 연산자를 구하려면 % 기호를 사용하자. 그리고 `parseInt(num[0], 10)` 에 배열 뒤에 있는 10은 10진수를 의미한다.
+
+[20번 문제 코드 바로보기](./20210620.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 21번 : set은 어떻게 만드나요?
+- 다음 중 set을 만드는 방법으로 올바른 것을 모두 고르시오.
+
+<br>
+
+1) var x = {1, 2, 3, 5, 6, 7}
+2) var x = {};
+`3) var x = new Set('javascript');`
+4) var x = new Set(range(5));
+`5) var x = new Set();`
+
+### 👉 문제 결과 : 3, 5번
+여기서 4번에 range는 없는 메서드이다.
+
+<br>
+
+**set이란 ?** 중복되지 않는 데이터를 저장하는 데이터 구조입니다. 
+
+```
+const list = [1, 2, 2, 3, 4, 5, 5, 5, 6];
+
+let setVal = new Set(list);
+```
+
+`let setVal = new Set();` 이렇게 let 변수에 Set객체를 이용해서 만들어준다.  setVal안에는 set 인스턴스가 생성이된다. list 변수를 Set안에 넣으면 데이터가 그대로 찍혀 나온다. 근데 마침, `const list = [1, 2, 2, 3, 4, 5, 5, 5, 6];` 여기서 중복되는 숫자들이 많은데 콘솔에 막상 찍혀나온 값들은 중복되지 않는다. 
+
+```
+const list = [1, 2, 2, 3, 4, 5, 5, 5, 6];
+
+let setVal = new Set(list);
+setVal.add(10);
+setVal.delet(10);
+setVal.has(10);
+```
+
+add 메서드는 값을 추가해준다. delet 메서드는 값을 삭제해준다. has는 해당하는 값이 Set안에 있는지 없는지 찾아봐주는 메서드이다. 그래서 그것을 `true / false` 로 반환해준다.
