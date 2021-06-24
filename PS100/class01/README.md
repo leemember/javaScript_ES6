@@ -836,6 +836,8 @@ console.log(val1, val2);
 3. var x = new Set(range(5));
    `5) var x = new Set();`
 
+<br>
+
 ### 👉 문제 결과 : 3, 5번
 
 여기서 4번에 range는 없는 메서드이다.
@@ -887,6 +889,8 @@ add 메서드는 값을 추가해준다. delet 메서드는 값을 삭제해준�
 - | OR 연산자
 - //는 주석처리다.
 
+<br>
+
 ### 👉 문제 결과 : 2번
 
 여기서 %는 나머지 기호를 뜻한다. 그러므로 2번은 나머지 기호를 사용했을 때 나머지가 0으로 떨어지는 것을 보니 배수이다.
@@ -902,6 +906,8 @@ add 메서드는 값을 추가해준다. delet 메서드는 값을 삭제해준�
 ### 📃 문제 23번 : OX 문제
 
 - console.log(10/3)의 출력 결과는 3이다.
+
+<br>
 
 ### 👉 문제 결과 : X
 
@@ -929,6 +935,10 @@ add 메서드는 값을 추가해준다. delet 메서드는 값을 삭제해준�
 - toUpperCase : 소문자를 대문자로 바꿔주는 메서드
 - toLowerCase : 대문자를 소문자로 바꿔주는 메서드
 
+<br>
+
+### 👉 문제 결과
+
 ```
 const name = "marry";
 
@@ -950,6 +960,10 @@ console.log(name.toLowerCase()); // marry
 
 입력으로 반지름의 길이 정수 n이 주어지면 원의 넓이를 반환하는 함수를 만들어 주세요.
 
+<br>
+
+### 👉 문제 결과
+
 ```
 function circleWidth(n) {
   return n * n * 3.14;
@@ -959,3 +973,41 @@ console.log(circleWidth(5));
 ```
 
 circleWidth(n) 정수 n을 반지름으로 받아야 하기 떄문에 () 괄호 안에 n을 넣는다. 그리고 원의 넓이를 구하기 위해 함수 리턴을 `반지름의 길이 * 반지름의 길이 * 3.14` 로 `return n * n * 3.14;`로 설정해준다. 그리고 반지름이 만약 5라고 한다면 `console.log(circleWidth(5));` 이렇게 circleWidth 함수 매개변수에 5라는 값을 넣는다.
+
+[25번 문제 코드 바로보기](./20210625.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 26번 : 행성 문제2
+
+- 우리 태양계를 이루는 행성은 수성, 금성, 지구, 화성, 목성, 토성, 천왕성, 해왕성이 있습니다. 이 행성들의 영어 이름은 Mercury, Venus, Mars, Jupiter, Satum, Uranus, Neptune 입니다.
+
+**행성의 한글 이름을 입력하면 영어 이름을 반환하는 프로그램**을 만들어주세요.
+
+<br>
+
+### 👉 문제 결과
+
+```
+const planets = {
+  수성: "Mercury",
+  금성: "Venus",
+  지구: "Earth",
+  화성: "Mars",
+  목성: "Jupiter",
+  토성: "Satum",
+  천왕성: "Uranus",
+  해왕성: "Neptune"
+};
+
+const name = prompt();
+console.log(planets[name]);
+```
+
+planets 객체에 한글로 key값을 만들고 영어로 값을 넣어놨다. 그래서 우리는 prompt() 함수를 통해 한글을 입력하면 key값으로 하여금 값에 접근한다는 개념이다. (값=영어) 접근방식 : `console.log(planets[name]);`, 그래서 **금성**이라고 입력하면 금성 값이 name 안에 들어가게 되고 planets에 name이 금성으로 접근해서 Venus라는 값을 반환하게 해준다. 그러므로 금성을 입력했을 시 Venus라는 단어가 출력된다.
+
+만약 접근 방식을 `console.log(planets[name]);` 이렇게 말고 다른 방식으로 출력해주고 싶다면 이 방법이 있다. 😐 `console.log(planets.name);` 이렇게 사용하면 undefined가 뜬다. `console.log(planets.토성);` 이런식으로 속성(property)이 식별자로 들어가야한다. 그래야 값에 접근이 가능하다.
