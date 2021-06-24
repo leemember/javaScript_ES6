@@ -1011,3 +1011,5 @@ console.log(planets[name]);
 planets 객체에 한글로 key값을 만들고 영어로 값을 넣어놨다. 그래서 우리는 prompt() 함수를 통해 한글을 입력하면 key값으로 하여금 값에 접근한다는 개념이다. (값=영어) 접근방식 : `console.log(planets[name]);`, 그래서 **금성**이라고 입력하면 금성 값이 name 안에 들어가게 되고 planets에 name이 금성으로 접근해서 Venus라는 값을 반환하게 해준다. 그러므로 금성을 입력했을 시 Venus라는 단어가 출력된다.
 
 만약 접근 방식을 `console.log(planets[name]);` 이렇게 말고 다른 방식으로 출력해주고 싶다면 이 방법이 있다. 😐 `console.log(planets.name);` 이렇게 사용하면 undefined가 뜬다. `console.log(planets.토성);` 이런식으로 속성(property)이 식별자로 들어가야한다. 그래야 값에 접근이 가능하다.
+
+[26번 문제 코드 바로보기](./20210626.js)
