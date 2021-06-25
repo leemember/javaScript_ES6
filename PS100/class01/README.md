@@ -1013,3 +1013,48 @@ planets 객체에 한글로 key값을 만들고 영어로 값을 넣어놨다. �
 만약 접근 방식을 `console.log(planets[name]);` 이렇게 말고 다른 방식으로 출력해주고 싶다면 이 방법이 있다. 😐 `console.log(planets.name);` 이렇게 사용하면 undefined가 뜬다. `console.log(planets.토성);` 이런식으로 속성(property)이 식별자로 들어가야한다. 그래야 값에 접근이 가능하다.
 
 [26번 문제 코드 바로보기](./20210626.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 27번 : 객체 만들기
+
+- 첫번째 입력에서는 학생의 이름이 공백으로 구분되어 입력되고, 두번째에는 그 학생의 수학 점수가 공백으로 구분되어 주어집니다.
+
+두 개를 합쳐 **학생의 이름이 key이고 value가 수학 점수**인 객체를 출력해주세요.
+
+```
+입력
+Yujin Hyewon
+70    100
+
+출력
+{'Yujin':70, 'Hyewon': 100}
+```
+
+<br>
+
+### 👉 문제 결과
+
+```
+const keys = prompt().split(" "); //학생이름
+const values = prompt().split(" "); //점수
+let obj = {};
+
+for (let i = 0; i < keys.length; i++) {
+  obj[keys[i]] = values[i];
+}
+
+console.log(obj);
+```
+
+`prompt().split(" ");`에서 propmt는 입력하는 창을 말하고 `split(" ")`는 공백을 기준으로 내용물을 배열로 나눠 담긴다. `for (let i = 0; i < keys.length; i++)` 이 for문은 학생이름 keys 변수에 담긴 배열 개수대로 for문이 돌아간다. 그리고 `obj[keys[i]] = values[i];` 이거는 obj라는 초기화 된 변수값에 prompt로 입력한 값들이 담긴다. obj에 keys는 학생이름, values는 학생의 점수로 서로 일치하게 obj에 생성되는데 이걸 `console.log(obj)`를 했을 때 학생이름과 점수가 찍혀나온다.
+
+![](https://images.velog.io/images/leemember/post/fa456832-3558-44ea-813e-cae33929138f/image.png)
+
+이런식으로 말이다!
+
+[27번 문제 코드 바로보기](./20210627.js)
