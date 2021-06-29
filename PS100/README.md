@@ -7,5 +7,6 @@
 
 ## 목차
 
-### 🎈 [1부 1번 ~ 50번 풀이](./class01/README.md)
+### 🎈 [1번 ~ 31번 풀이](./class01/README.md)
 
+### 🎈 [32번 ~ 62번 풀이](./class02/README.md)
