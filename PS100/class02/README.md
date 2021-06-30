@@ -23,3 +23,52 @@ console.log(words.split(" ").length);
 `split`은 단어를 쪼개주는 메서드이고, `length`는 길이를 뜻한다. 그러니 words안에 있는 문자열들을 split() 메서드로 `" "` 공백 기준으로 쪼개고 `length`를 사용하여 단어의 갯수를 나타낸다.
 
 [32번 문제 코드 바로보기](./032.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 33번 : 거꾸로 출력하기
+
+- 한 줄에 여러개의 숫자가 입력되면, 역순으로 그 숫자들을 하나씩 출력하는 프로그램을 작성하시오.
+
+```
+입출력
+
+입력 : 1 2 3 4 5
+출력 : 5 4 3 2 1
+
+입력 : 2 4 6 7 8
+출력 : 8 7 6 4 2
+```
+
+<br>
+
+### 👉 문제 결과
+
+```
+const arr = prompt().split(" ").reverse();
+let reverseVal = "";
+
+for (let i = 0; i < arr.length; i++) {
+  reverseVal = reverseVal + (arr[i] + " ");
+}
+
+console.log(reverseVal);
+```
+
+arr 는 `prompt` 메서드를 사용하여 입력되도록 했고 입력된 숫자들을 `split` 메서드로 문자열을 쪼개고 거꾸로 출력하기 위해 `reverse` 메서드를 사용했다.
+
+그리고 for문을 이용하여 입력한 문자열의 `arr.length` 길이만큼 출력되도록 했다.
+
+출력 될 때는 문자들이 구분이 잘 가게 빈칸을 넣어줬다. ` reverseVal = reverseVal + (arr[i] + " ")`
+
+[33번 문제 코드 바로보기](./033.js)
+
+<br>
+
+---
+
+<br>
