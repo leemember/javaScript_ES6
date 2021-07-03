@@ -227,3 +227,78 @@ console.log(result);
 그리고 i의 초기값은 0이니까 출력되는 값중 첫 값은 0이 찍혀 나올테니 이를 방지해주기 위해서 `(i + 1)` 이 값을 넣어주었다. 그리고 값이 출력 될 때 알아보기 좋게 공백도 넣어줬다.
 
 [36번 문제 코드 바로보기](./036.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 37번 : 반장 선거
+
+- 새 학기를 맞아 호준이네 반은 반장 선거를 하기로 했습니다. 그런데 표를 하나씩 개표하는 과정이 너무 번거롭게 느껴진 당신은 **학생들이 뽑은 후보들을 입력받으면 뽑힌 학생의 이름과 받은 표 수를 출력하는 프로그램**을 작성하기로 했습니다.
+
+```
+입력 
+원범 원범 혜원 혜원 혜원 혜원 유진 유진
+
+출력
+혜원(이)가 총 4표로 반장이 되었습니다.
+```
+
+<br>
+
+### 👉 문제 결과
+
+```
+const array = ["원범", "원범", "혜원", "혜원", "혜원", "혜원", "유진", "유진"];
+let result = {};
+let winner = "";
+
+for (let index in array) {
+  let val = array[index];
+  result[val] = result[val] === undefined ? 1 : (result[val] = result[val] + 1);
+}
+
+winner = Object.keys(result).reduce(function (a, b) {
+  return result[a] > result[b] ? a : b;
+});
+
+console.log(`${winner}(이)가 총 ${result[winner]}표로 반장이 되었습니다.`);
+```
+
+여기서 `array`는 배열에 객체식으로 반장선거에 나갈 사람을 담아놓았고 `let result = {};`는 결과물을 담아낼 초기 변수이다. 그리고 `let winner = ""; `는 누가 몇 표를 받았는지 승자를 걸러내어 이름을 저장할 변수이다. 
+
+이렇게 변수를 선언해 준 뒤, for문을 이용하여 누가 몇표를 받았는지를 나타내는 함수를
+
+```
+for (let index in array) {
+  let val = array[index];
+  result[val] = result[val] === undefined ? 1 : (result[val] = result[val] + 1);
+}
+```
+이런식으로 나타내었는데, 여기서 index는 array 변수에 담긴 배열의 수를 의미한다. ` result[val] = result[val] === undefined ? 1 : (result[val] = result[val] + 1);`는 삼항연산자로   result[val] 가 `undefined`이면 1을 반환해주고, 그게 아니라면 `(result[val] = result[val] + 1)`를 계산해주는데, 처음에는 원범이가 들어가게 될 것이고 아무런 값이 없으니 undefined이 성립되어 true로서 1이라는 숫자가 반환될 것이다. 그러면 원범이라는 키값에 1이 들어가게 된다. `{"원범" : 1}` 이런식으로 말이다. 또 index만큼 for문이 돌아 두 번째 값에 있는 원범이는 이제 1이라는 숫자가 들어있으니  `undefined`이 아니다. 그럼 `result[val] = result[val] + 1` 이 값이 계산이 될텐데 그럼 숫자 2가 된다. 이렇게 반장선거에 나간 애들이 for문이 돌면서 값이 중첩되어 몇표를 받았는지 알 수 있게된다.
+
+다음은 승자를 걸러내 주기 위한 함수를 만들 것이다.
+
+```
+winner = Object.keys(result).reduce(function (a, b) {
+  return result[a] > result[b] ? a : b;
+});
+```
+바로 winner라는 변수로 함수를 만들어 줄 것인데 Object라는 객체에는 keys라는 메서드를 제공해준다. 그래서 매개변수에 result로 반장선거에 나간 친구들의 결과물(몇표를 득했는지)을 담고 `reduce`라는 함수를 사용할 것인다. **💡이 함수의 역할은 !** 배열의 함수이다. 우리가 키 값으로 만든 배열의 원소를 하나하나 순회하면서 function안에 있는 매개변수를 a,b에 계속 대입을 한다. 그리고 안에 있는 함수를 실행하게 한다. 그래서 계속하여 a가 중첩되는데, 처음 a에는 원범이가 b에는 혜원이가 비교대상이 되어 누가 더 표를 많이 받았는지 삼항연산자로 결투를 한다. 그럼 표를 더 많이 득한 쪽이 a가 되어 또 다시 a가 매개변수로 중첩하며 `return result[a] > result[b] ? a : b;` 삼항연산자로 반환하게 되는데 이런 식으로 계속 표를 많이 득한 사람을 걸러내줄 수 있다.
+
+마지막으로, 그 승부자를 콘솔에 찍히게끔 하기 위해
+
+`console.log(`${winner}(이)가 총 ${result[winner]}표로 반장이 되었습니다.`);` 이렇게 백틱을 이용하여 나타냈다.
+- 콘솔결과 : 혜원(이)가 총 4표로 반장이 되었습니다. 
+
+😫 이 문제를 풀면서 넘 어려웠다. 내 것으로 만들기 위해 여러번 복습해 봐야겠다.
+
+[37번 문제 코드 바로보기](./037.js)
+
+<br>
+
+---
+
+<br>
