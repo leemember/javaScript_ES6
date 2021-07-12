@@ -466,7 +466,7 @@ i는 친구들의 수만큼 돌면 된다. `parseInt`를 해준다. 왜냐면 �
 ### 👉 문제 결과
 
 ```
-const prime = 10;
+const prime = 1;
 
 function primeFunc(n) {
   for (let i = 2; i < n; i++) {
@@ -475,16 +475,53 @@ function primeFunc(n) {
       return false;
     }
   }
-  if (prime === 1) {
+  if (n === 1) {
     console.log("no");
     return false;
   }
   console.log("YES");
 } //11이랑 같아지는 순간 종료된다.
 
-primeFunc(10);
+primeFunc(prime);
 ```
 
-소수는 1보다 커야하니 `let i=2;`로 시작한다. 11이라는 수보다 작고 2보다 큰 것들을 for 문 안에서 나눠준다. `if (n % i === 0)` 소수가 아니니까 나눠 떨어지는 숫자가 있어선 안되니 이렇게 지정했다. 하지만 만약 소수일 경우 yes를 표현해준다.
+소수는 1보다 커야하니 `let i=2;`로 시작한다. 11이라는 수보다 작고 2보다 큰 것들을 for 문 안에서 나눠준다. `if (n % i === 0)` 소수가 아니니까 나눠 떨어지는 숫자가 있어선 안되니 이렇게 지정했다. 소수가 아니니까 NO ! 그리고 false로 종료를 시켜준다. 하지만 만약 소수일 경우 yes를 표현해준다.
 
 [41번 문제 코드 바로보기](./041.js)
+
+<br>
+
+---
+
+<br>
+
+### 📃 문제 42번 : 2020년
+
+- 2020년 1월 1일은 수요일입니다. 2020년 a월 b일은 무슨 요일일까요 ? 두 수 a, b를 입력받아 2020년 a월 b일이 무슨 요일인지 리턴하는 함수 solution을 완성하세요. 요일의 이름은 일요일부터 토요일까지 각각 SUN, MON, TUE, WED, THU, FRI, SAT 입니다. 예를 들어 a = 5, b = 24라면 5월 24일은 일요일이므로 문자열 "SUN"를 반환하세요.
+
+<br>
+
+#### **제한 조건**
+
+2020년은 윤년입니다. 2020년 a월 b일은 실제로 있는 날 입니다. (13월 26일이나 2월 45일 같은 날짜는 주어지지 않습니다.)
+
+<br>
+
+### 👉 문제 결과
+
+```
+const day = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+const month = "5"; //월
+const date = "5"; //일
+
+function solution(a, b) {
+  // 월,일 을 의미하는 매개변수다.
+  const theDay = new Date(`2021-${a}-${b}`);
+  console.log(day[theDay.getDay()]);
+}
+
+solution(month, date);
+```
+
+`function solution(a, b)`는 월과 일을 받아내주는 매게변수다. 그리고 `Date` 는 날짜 정보를 출력해준다. 그리고 우리가 필요한 것은 **요일**이다.
+이 문제에서 새롭게 배우는 메서드 중 `getDay()`라는 메서드를 새로 배우게 되는데, 그 날의 요일을 숫자로 반환한다. 그래서 0은 일요일 1은 월요일 이렇게 배열을 통해 알면 된다. 그리고 진짜 날짜를 구체적으로 나타나게 하기 위해 `day[theDay.getDay()])` 이렇게 day로 만들어진 배열 속에서 theDay에 날짜를 뽑아주는 `getDay` 메서드를 이용하면 👉 `수요일`로 정확하게 나타내주는 것을 확인 할 수 있다.
